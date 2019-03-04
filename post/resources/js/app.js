@@ -1,7 +1,20 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
+Vue.use(VueRouter);
 
+const Foo = {template: '<div>foo</div>'}
+const Bar = {template: '<div>bar</div>'}
+
+const router = new VueRouter({
+    mode: 'history',
+    base: '/',
+    routes: [
+        {path: '/foo', component: Foo},
+        {path: '/bar', component: Bar}
+    ]
+});
+
+new Vue({
+    router
+}).$mount('#app');
