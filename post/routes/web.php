@@ -15,13 +15,15 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'api'], function ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
     $router->get('/posts', 'PostController@index');
     $router->get('/post/{id}', 'PostController@show');
     $router->delete('/post/{id}', 'PostController@show');
     $router->put('/post/{id}', 'PostController@update');
     $router->post('/post', 'PostController@create');
 });
+    $router->post('/login', 'AuthController@postLogin');
+
 
 $router->get('/{route:.*}/', function () {
     return view('app');
