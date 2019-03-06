@@ -1,3 +1,4 @@
 post/node_modules/
 post/public/dist/
 
+/post/nbproject/private/
