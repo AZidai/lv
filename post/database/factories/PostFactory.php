@@ -13,7 +13,7 @@
 
 $factory->define(App\Post::class, function (Faker\Generator $faker) {
     return [
-        'title'     => $faker->text(20),
-        'body'    => $faker->text(200)
+        'title' => $faker->text(20),
+        'body'  => $faker->text(200)
     ];
 });

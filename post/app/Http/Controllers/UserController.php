@@ -13,9 +13,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
         ]);
-
         $user = User::create($request->all());
-
         return response()->json($user, 201);
     }
 }

@@ -17,11 +17,10 @@ class CommentController extends Controller
     {
         return response()->json(Comment::find($id));
     }
-
+    
     public function create(Request $request)
     {
         $comment = Comment::create($request->all());
-
         return response()->json($comment, 201);
     }
 
@@ -29,7 +28,6 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($id);
         $comment->update($request->all());
-
         return response()->json($comment, 200);
     }
 

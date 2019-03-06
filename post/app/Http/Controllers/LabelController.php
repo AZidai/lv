@@ -21,7 +21,6 @@ class LabelController extends Controller
     public function create(Request $request)
     {
         $label = Label::create($request->all());
-
         return response()->json($label, 201);
     }
 
