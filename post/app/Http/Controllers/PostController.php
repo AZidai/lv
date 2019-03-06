@@ -29,7 +29,6 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->update($request->all());
-
         return response()->json($post, 200);
     }
 
