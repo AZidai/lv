@@ -21,8 +21,10 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->delete('/post/{id}', 'PostController@show');
     $router->put('/post/{id}', 'PostController@update');
     $router->post('/post', 'PostController@create');
+    $router->post('/post/{id}/comments','CommentsController@store') ;
 });
     $router->post('/login', 'AuthController@postLogin');
+    $router->post('/register', 'AuthController@postRegister');
 
 
 $router->get('/{route:.*}/', function () {

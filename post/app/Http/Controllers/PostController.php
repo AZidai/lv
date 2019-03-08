@@ -2,11 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use Validator;
 use Illuminate\Http\Request;
+use App\Post;
+use App\Helpers\Response;
 
 class PostController extends Controller
 {
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    public function addComment($body)
+    {
+        $this->comments()->create('body'=>$body);
+    }
+    
 
     public function index()
     {
@@ -20,21 +33,53 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $post = Post::create($request->all());
+        $validator=Validator::make($this->request->all(),[
+        'title'=>'requierd',
+        'body'=>'requierd',
+        'user_id'=>'requierd',
+        ]);
 
-        return response()->json($post, 201);
+        if($validator->errors()->count()) {
+        return Response::badRequest($validator->errors());
+        }
+        $post = $this->post->createPost($this->request);
+        if($post) {
+        return Response::created($post);
+        
+        return Response::internalError('Unable to create Post');
+        }
     }
 
-    public function update($id, Request $request)
+    public function update($id)
     {
         $post = Post::findOrFail($id);
-        $post->update($request->all());
-        return response()->json($post, 200);
+        if(!$post) {
+            return Response::notFound('Post not found');
+        }
+        $validator = Validator::make($this->request->all(),[
+            'title'=>'required',
+            'body' =>'required'
+        ]);
+
+        if($validator->errors()->count()) {
+            return Response::badRequest($validator->errors());
+        }
+        $post = $this->post->updatePost($id,$this->request->all());
+        if($post) {
+            return Response::json($post);
+        }
+        return Response::internalError('Unable to update the post');
     }
 
     public function delete($id)
     {
-        Post::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        $post=$this->post->find($id)
+        if(!$post) {
+            return Response::notFound('Post not found');
+        }
+        if(!$post->delete()) {
+            return Response::internalError('Unable to delete the post');
+        }
+        return Response::deleted();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
+use App\User;
 
 class AuthController extends Controller
 {
@@ -35,5 +36,19 @@ class AuthController extends Controller
             return response()->json(['token_absent' => $e->getMessage()], 500);
         }
         return response()->json(compact('token'));
+    }
+
+    public function postRegister(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
+        ]);
+
+        $hasher = app()->make('hash');
+        $request['password']= $hasher->make($request->input('password'));
+        $user = User::create($request->all());
+
+        return response()->json($user);
     }
 }
