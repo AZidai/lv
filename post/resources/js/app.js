@@ -9,16 +9,12 @@ import Navbar from './Navbar'
 
 Vue.use(VueRouter)
 
-const Foo = {template: '<div>foo</div>'}
-const Bar = {template: '<div>bar</div>'}
 Vue.component(Navbar)
 
 const router = new VueRouter({
     mode: 'history',
     base: '/',
     routes: [
-        {path: '/foo', component: Foo},
-        {path: '/bar', component: Bar},
         {path: '/login', component: Login},
         {path: '/register', component: Register}
     ]

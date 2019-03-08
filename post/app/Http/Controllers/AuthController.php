@@ -9,6 +9,7 @@ use App\User;
 
 class AuthController extends Controller
 {
+
     /**
      * @var \Tymon\JWTAuth\JWTAuth
      */
@@ -18,14 +19,15 @@ class AuthController extends Controller
     {
         $this->jwt = $jwt;
     }
+
     public function postLogin(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
         try {
-            if (! $token = $this->jwt->attempt($request->only('email', 'password'))) {
+            if (!$token = $this->jwt->attempt($request->only('email', 'password'))) {
                 return response()->json(['user_not_found'], 404);
             }
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
@@ -41,14 +43,16 @@ class AuthController extends Controller
     public function postRegister(Request $request)
     {
         $this->validate($request, [
+            'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required'
         ]);
 
         $hasher = app()->make('hash');
-        $request['password']= $hasher->make($request->input('password'));
+        $request['password'] = $hasher->make($request->input('password'));
         $user = User::create($request->all());
 
         return response()->json($user);
     }
+
 }
