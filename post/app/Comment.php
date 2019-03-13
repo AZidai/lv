@@ -10,30 +10,15 @@ class Comment extends Model
     'body', 'attachment', 'user_id','post_id'
   ];
 
-
-  public function createComment($input)
+  //elloquent relationships
+  public function post()
   {
-    return $this->create($input->all());
+      return $this->belongsTo('App/Post');
   }
-
-  public function updateComment($id, $input)//metoda koja se poziva u kontroleru za akiciju
+  
+  public function user()
   {
-    $updated = $this->find($id)->update($input);
-    $comment = $this->find($id);
-    if($updated) {
-      return $comment;
-    }
-      return false;
-    }
-
-  public function getComment($id)
-    {
-      return $this->find($id);
-    }
-
-  public function getComments()
-    {
-      $query = $this;
-      return $query->paginate(20);
-    }
+    return $this->belongsTo('App/User');
+  }
 }
+

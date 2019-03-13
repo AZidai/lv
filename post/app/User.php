@@ -29,9 +29,9 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      *
      * @var array
      */
-    // protected $hidden = [
-    //     'password'
-    // ];
+    protected $hidden = [
+        'password','api_token','id'
+    ];
 
     public function getJWTIdentifier()
     {
@@ -45,11 +45,11 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
 
     public function comments()
     {
-        return $this->hasMany('App\Comment','user_id');
+        return $this->hasMany('App\Comment');
     }
     public function posts()
     {
-        return $this->hasMany('App\Post','user_id');
+        return $this->hasMany('App\Post');
     } 
 
     //uzmi pass hash

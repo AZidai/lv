@@ -13,6 +13,7 @@
 
 $factory->define(App\Post::class, function (Faker\Generator $faker) {
     return [
+        'user_id' => factory('App\User')->create()->id,
         'title' => $faker->text(20),
         'body'  => $faker->text(200)
     ];

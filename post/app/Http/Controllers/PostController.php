@@ -5,25 +5,16 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Comment;
 use App\Helpers\Response;
 
 class PostController extends Controller
 {
 
-    public function comments()
-    {
-        return $this->hasMany('App\Comment');
-    }
-
-    public function addComment($body)
-    {
-        $this->comments()->create('body'=>$body);
-    }
-    
-
     public function index()
     {
-        return response()->json(Post::all());
+        $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
+        return response()->json($posts);
     }
 
     public function show($id)
@@ -33,21 +24,10 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $validator=Validator::make($this->request->all(),[
-        'title'=>'requierd',
-        'body'=>'requierd',
-        'user_id'=>'requierd',
-        ]);
+        $post = Post::create($request->all());
 
-        if($validator->errors()->count()) {
-        return Response::badRequest($validator->errors());
-        }
-        $post = $this->post->createPost($this->request);
-        if($post) {
-        return Response::created($post);
+        return response()->json($post, 201);
         
-        return Response::internalError('Unable to create Post');
-        }
     }
 
     public function update($id)
@@ -73,7 +53,7 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        $post=$this->post->find($id)
+        $post=$this->post->find($id);
         if(!$post) {
             return Response::notFound('Post not found');
         }

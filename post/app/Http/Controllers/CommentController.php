@@ -3,30 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\User;
 use Illuminate\Http\Request;
 
 
 class CommentController extends Controller
 {
-    protected->comment = $comment;
-    protected->request = $request;
-
-    public funtion __contruct(Comment $comment,Request $request)
-    {
-        $this->comment=$comment;
-        $this->request=$request;
-    }
-
-    //elloquent relationships
-    public function post(){
-        return $this->belongsTo('App/Post');
-    }
-
-    public function user(){
-        return $this->belongsTo('App/User');
-    }
-
-
     public function index()
     {
         return response()->json(Comment::all());
@@ -37,8 +19,9 @@ class CommentController extends Controller
         $comment = $this->comment->getComment($id);
         if(!$comment) {
             return Response::notFound('Comment not found');
-        }
+        }else{ 
             return Response::json($comment);
+        }
     }
         
 

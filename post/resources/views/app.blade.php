@@ -7,25 +7,9 @@
         <title>Lumen and Vue</title>
         <link rel="stylesheet" href="dist/app.css" />
     </head>
-    <body> 
+    <body>
         <div id="app">
-            <nav class="navbar navbar-expand-sm navbar-dark bg-info mb-2">
-                <div class="container">
-                    <a href="#" class="navbar-brand">TIAC Social</a>
-                    <li><router-link to="/login">Login</router-link></li>
-                    <li><router-link to="/register">Register</router-link></li>
-                </div>
-            </nav>
-        <h1>LV</h1>
-            <h1>Hello App!</h1>
-            <p>
-<!--                 <router-link to="/login">Log in</router-link>
-                <router-link to="/register">Sign up</router-link>
-                <router-link to="/foo">Go to Foo</router-link>
-                <router-link to="/bar">Go to Bar</router-link> -->
-            </p>
-
-            <router-view></router-view>
+            <Master/>
         </div>
         <script src="dist/app.js"></script>
     </body>
