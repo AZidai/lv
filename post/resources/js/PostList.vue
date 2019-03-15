@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div v-for="post in posts" class="card gedf-card wrapper-div">
+    <div v-for="post in posts" v-bind:key="post.id" class="card gedf-card wrapper-div">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between align-items-center">
@@ -18,8 +18,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                             <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" href="#">Save</a>
-                            <a class="dropdown-item" href="#">Hide</a>
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" @click="deletePost(post.id)">Delete</a>
                             <a class="dropdown-item" href="#">Report</a>
                         </div>
                     </div>
@@ -41,10 +41,11 @@
     </div>
 </div>
 </template>
+
 <script>
 import axios from 'axios'
 
-export default {
+export default{
   data: function () {
     return {
       posts:[]
@@ -57,13 +58,25 @@ export default {
         })
     },
         
-        methods: {
-            getAllPosts : function(){
-                axios.get('api/posts')
-                    .then(response=>{
-                        this.posts = response.data
+    methods: {
+        getAllPosts : function(){
+            axios.get('api/posts')
+                .then(response=>{
+                    this.posts = response.data
+                })
+            },
+        deletePost(id){
+            if(confirm('Are you sure')){
+                fetch(`post/${id}`,{
+                    method:'delete'
+                })
+                    .then(res=> res.json())
+                    .then(data => {
+                        this.getAllPosts();
                     })
-                },
+                    .catch(err => console.log(err))
+            }
         }
     }
+}
 </script>

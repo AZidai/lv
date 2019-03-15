@@ -14,7 +14,7 @@
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {});
     $router->get('/api/posts', 'PostController@index');
     $router->get('/post/{id}', 'PostController@show');
-    $router->delete('/post/{id}', 'PostController@show');
+    $router->delete('/post/{id}', 'PostController@delete');
     $router->put('/post/{id}', 'PostController@update');
     $router->post('/api/post', 'PostController@create');
 

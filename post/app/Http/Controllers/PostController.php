@@ -53,13 +53,9 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        $post=$this->post->find($id);
-        if(!$post) {
-            return Response::notFound('Post not found');
-        }
-        if(!$post->delete()) {
-            return Response::internalError('Unable to delete the post');
-        }
-        return Response::deleted();
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        return 204;
     }
 }
