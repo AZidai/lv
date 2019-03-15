@@ -11,18 +11,17 @@
   |
  */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
-$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
-    $router->get('/posts', 'PostController@index');
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {});
+    $router->get('/api/posts', 'PostController@index');
     $router->get('/post/{id}', 'PostController@show');
     $router->delete('/post/{id}', 'PostController@show');
     $router->put('/post/{id}', 'PostController@update');
-    $router->post('/post', 'PostController@create');
-});
+    $router->post('/api/post', 'PostController@create');
+
+    $router->get('/post/{id}/comments','CommentsController@store');
+
     $router->post('/login', 'AuthController@postLogin');
+    $router->post('/register', 'AuthController@postRegister');
 
 
 $router->get('/{route:.*}/', function () {

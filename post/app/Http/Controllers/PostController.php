@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use Validator;
 use Illuminate\Http\Request;
+use App\Post;
+use App\Comment;
+use App\Helpers\Response;
 
 class PostController extends Controller
 {
 
     public function index()
     {
-        return response()->json(Post::all());
+        $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
+        return response()->json($posts);
     }
 
     public function show($id)
@@ -23,18 +27,39 @@ class PostController extends Controller
         $post = Post::create($request->all());
 
         return response()->json($post, 201);
+        
     }
 
-    public function update($id, Request $request)
+    public function update($id)
     {
         $post = Post::findOrFail($id);
-        $post->update($request->all());
-        return response()->json($post, 200);
+        if(!$post) {
+            return Response::notFound('Post not found');
+        }
+        $validator = Validator::make($this->request->all(),[
+            'title'=>'required',
+            'body' =>'required'
+        ]);
+
+        if($validator->errors()->count()) {
+            return Response::badRequest($validator->errors());
+        }
+        $post = $this->post->updatePost($id,$this->request->all());
+        if($post) {
+            return Response::json($post);
+        }
+        return Response::internalError('Unable to update the post');
     }
 
     public function delete($id)
     {
-        Post::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        $post=$this->post->find($id);
+        if(!$post) {
+            return Response::notFound('Post not found');
+        }
+        if(!$post->delete()) {
+            return Response::internalError('Unable to delete the post');
+        }
+        return Response::deleted();
     }
 }

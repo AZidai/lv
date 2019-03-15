@@ -1,20 +1,29 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import bootstrap from 'bootstrap'
+import VueRouter from 'vue-router'
+import Master from './layouts/Master'
+import Login from './auth/Login'
+import Register from './auth/Register'
+import Posts from './Posts'
 
-Vue.use(VueRouter);
+window.eventBus = new Vue()
 
-const Foo = {template: '<div>foo</div>'}
-const Bar = {template: '<div>bar</div>'}
+Vue.use(VueRouter)
+
+const routes = [
+    { path: '/login', component: Login },
+    { path: '/register', component: Register },
+    { path: '/posts', component: Posts } 
+]
 
 const router = new VueRouter({
-    mode: 'history',
-    base: '/',
-    routes: [
-        {path: '/foo', component: Foo},
-        {path: '/bar', component: Bar}
-    ]
-});
+    routes,
+    mode:'history'
+})
 
 new Vue({
-    router
-}).$mount('#app');
+    el:'#app',
+    router: router,
+    components:{ Master },
+    template:'<Master/>'
+})

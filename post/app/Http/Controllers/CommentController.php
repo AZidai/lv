@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\User;
 use Illuminate\Http\Request;
+
 
 class CommentController extends Controller
 {
-
     public function index()
     {
         return response()->json(Comment::all());
@@ -15,16 +16,23 @@ class CommentController extends Controller
 
     public function show($id)
     {
-        return response()->json(Comment::find($id));
+        $comment = $this->comment->getComment($id);
+        if(!$comment) {
+            return Response::notFound('Comment not found');
+        }else{ 
+            return Response::json($comment);
+        }
     }
-    
-    public function create(Request $request)
+        
+
+    public function create()
     {
         $comment = Comment::create($request->all());
+
         return response()->json($comment, 201);
     }
 
-    public function update($id, Request $request)
+    public function update($id)
     {
         $comment = Comment::findOrFail($id);
         $comment->update($request->all());
