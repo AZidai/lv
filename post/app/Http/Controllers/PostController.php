@@ -53,7 +53,10 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::find($id);
+  
+        $post->comments()->delete();
+        
         $post->delete();
 
         return 204;
