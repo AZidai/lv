@@ -5,6 +5,7 @@ import Master from './layouts/Master'
 import Login from './auth/Login'
 import Register from './auth/Register'
 import Posts from './Posts'
+import store from './store'
 
 window.eventBus = new Vue()
 
@@ -13,7 +14,7 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/posts', component: Posts } 
+    { path: '/posts', component: Posts }
 ]
 
 const router = new VueRouter({
@@ -23,7 +24,8 @@ const router = new VueRouter({
 
 new Vue({
     el:'#app',
-    router: router,
+    router,
+    store, //same as store=store; analogno router
     components:{ Master },
     template:'<Master/>'
 })

@@ -24,6 +24,11 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
+        $validator = Validator::make($this->request->all(),[
+            'title'=>'required',
+            'body' =>'required',
+            'user_id'=>'required'
+        ]);
         $post = Post::create($request->all());
 
         return response()->json($post, 201);
@@ -34,11 +39,12 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         if(!$post) {
-            return Response::notFound('Post not found');
+            return response()->json()->notFound(404,'Post not found');
         }
         $validator = Validator::make($this->request->all(),[
             'title'=>'required',
-            'body' =>'required'
+            'body' =>'required',
+            'user_id'=>'required'
         ]);
 
         if($validator->errors()->count()) {
@@ -48,17 +54,19 @@ class PostController extends Controller
         if($post) {
             return Response::json($post);
         }
-        return Response::internalError('Unable to update the post');
+        return reponse()->json()->internalError('Unable to update the post');
     }
 
     public function delete($id)
     {
         $post = Post::find($id);
-  
-        $post->comments()->delete();
-        
-        $post->delete();
 
-        return 204;
+        if(!$post) {
+            return messageJson(404,$post,'Post not found');
+        }
+        if ($post){
+            $post->comments()->delete();
+            $post->delete();
+        }
     }
 }
