@@ -37,13 +37,13 @@ class UserController extends Controller
         'name'      => 'required'
     ]);
     if ($validator->errors()->count()) {
-        return Response::badRequest($validator->errors());
+        return response()->json()->badRequest($validator->errors());
     }
     $user = $this->users->createUser($this->request);
     if ($user) {
-        return Response::created($user);
+        return response()->json()->created($user);
     } else{
-    return Response::internalError('Unable to create the user');
+    return response()->json()->internalError('Unable to create the user');
     }
   } 
 

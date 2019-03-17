@@ -5,7 +5,7 @@ import Master from './layouts/Master'
 import Login from './auth/Login'
 import Register from './auth/Register'
 import Posts from './Posts'
-import store from './store'
+import {store} from './store' //zato sto je smesten store u const store = ..
 
 window.eventBus = new Vue()
 
