@@ -19,7 +19,8 @@ class PostController extends Controller
 
     public function show($id)
     {
-        return response()->json(Post::find($id));
+        $post = Post::find($id)->with('comments')->orderBy('created_at', 'desc')->get();
+        return response()->json($post);
     }
 
     public function create(Request $request)

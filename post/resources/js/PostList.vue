@@ -59,7 +59,7 @@ export default{
     },
         
     methods: {
-        getAllPosts : function(){
+        getAllPosts(){
             axios.get('api/posts')
                 .then(response=>{
                     this.posts = response.data

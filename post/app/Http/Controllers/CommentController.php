@@ -9,22 +9,6 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index()
-    {
-        return response()->json(Comment::all());
-    }
-
-    public function show($id)
-    {
-        $comment = $this->comment->getComment($id);
-        if(!$comment) {
-            return Response::notFound('Comment not found');
-        }else{ 
-            return Response::json($comment);
-        }
-    }
-        
-
     public function create()
     {
         $comment = Comment::create($request->all());

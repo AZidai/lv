@@ -11,15 +11,15 @@
   |
  */
 
-$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {});
-    $router->get('/api/posts', 'PostController@index');
+$router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/posts', 'PostController@index');
     $router->get('/post/{id}', 'PostController@show');
     $router->delete('/post/{id}', 'PostController@delete');
     $router->put('/post/{id}', 'PostController@update');
-    $router->post('/api/post', 'PostController@create');
-
-    $router->get('/post/{id}/comments','CommentsController@store');
-
+    $router->post('/post', 'PostController@create');
+    $router->post('/commment','CommentController@create');
+    $router->put('/comment/{id}','CommentController@update');
+});
     $router->post('/login', 'AuthController@postLogin');
     $router->post('/register', 'AuthController@postRegister');
 
