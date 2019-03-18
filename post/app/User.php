@@ -15,7 +15,7 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      * @var array
      */
     protected $fillable = [
-        'name', 'email','post_id','comment_id'
+        'name', 'email','post_id','comment_id','password'
     ];
     /**
      * The attributes excluded from the model's JSON form.
@@ -23,7 +23,7 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
      * @var array
      */
     protected $hidden = [
-        'password','api_token'
+        'password'
     ];
     public function getJWTIdentifier()
     {

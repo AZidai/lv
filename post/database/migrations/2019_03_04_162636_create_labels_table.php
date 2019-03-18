@@ -13,6 +13,7 @@ class CreateLabelsTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Schema::create('labels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -21,6 +22,7 @@ class CreateLabelsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
         });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 
     /**

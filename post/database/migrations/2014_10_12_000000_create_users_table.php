@@ -13,6 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -21,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('api_token')->unique();
             $table->timestamps();
         });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 
     /**

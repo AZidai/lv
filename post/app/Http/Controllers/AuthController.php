@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Ecxeptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 use App\User;
 
@@ -22,22 +23,27 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'email'    => 'required|email',
-            'password' => 'required',
+            'password' => 'required'
         ]);
+        //we pass these in attempt so JWT can create token
+        $credentials = $request->only('email','password');
         try {
-            if (! $token = $this->jwt->attempt($request->only('email', 'password'))) {
-                return response()->json(['user_not_found'], 404);
+            // pokusaj da napravis token,u koliko ne catach exception
+            if( !$token = $this->jwt->attempt($credentials)) {
+                return response()->json([
+                    'error' => 'Invalid Credentials'
+                ],401);
             }
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['token_expired'], 500);
-        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['token_invalid'], 500);
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['token_absent' => $e->getMessage()], 500);
+        }catch(JWTException $e) {
+            return response()->json([
+                'error' =>'Could not create token!'
+            ],500);
         }
-        return response()->json(compact('token'));
+        return response()->json([
+            'token' => $token,
+            'user' => $this->guard()->user()
+        ]);
     }
-
     public function postRegister(Request $request)
     {
         $this->validate($request, [
@@ -50,5 +56,19 @@ class AuthController extends Controller
         $user = User::create($request->all());
 
         return response()->json($user);
+    }
+
+    public function logout(){
+        auth('api')->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function me()
+    {
+        return response()->json(auth('api')->user());
+    }
+    public function guard()
+    {
+        return \Auth::Guard('api');
     }
 }

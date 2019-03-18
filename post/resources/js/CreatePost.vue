@@ -55,20 +55,25 @@ export default {
     data() {
         return {
             title:"",
-            body:""
+            body:"",
+            user_id: this.$userId
         }
     },
 
     methods:{
         addPost() {
-           const data = {
+            const token = localStorage.getItem('token')
+            const post = {
                 title: this.title,
                 body: this.body,
-                user_id:"2"
+                user_id: this.user_id
             }
 
-            axios.post('api/post',data).then(response=>{
-                this.posts = response.data
+            axios.post('api/post?token='+ token ,{post},
+            {headers:{'X-Requested-With':'XMLHttpRequest'}})
+            .then(response =>
+            {
+                this.posts = response.post
                 this.$root.$emit('PostAdded')
             })
         }
