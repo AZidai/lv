@@ -44,6 +44,7 @@
 
 <script>
 import axios from 'axios'
+import store from 'store'
 
 export default{
   data: function () {
@@ -60,16 +61,17 @@ export default{
         
     methods: {
         getAllPosts(){
-            axios.get('api/posts')
+            axios.get('api/posts',{
+                headers:{ Authorization: 'Bearer ' + localStorage.getItem('token')}})
                 .then(response=>{
                     this.posts = response.data
                 })
             },
         deletePost(id){
             if(confirm('Are you sure')){
-                fetch(`post/${id}`,{
+                fetch(`post/${id}?token=`+token,{
                     method:'delete'
-                })
+                },{headers:{'X-Requested-With':'XMLHttpRequest'}})
                     .then(res=> res.json())
                     .then(data => {
                         this.getAllPosts();

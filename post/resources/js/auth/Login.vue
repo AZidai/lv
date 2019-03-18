@@ -8,7 +8,8 @@
       aria-describedby="emailHelp" 
       placeholder="Enter email" 
       required="required"
-      v-model="email">
+      v-model="email"
+      />
   </div>
   <div class="form-group">
     <input 
@@ -16,7 +17,8 @@
       class="form-control" 
       placeholder="Password" 
       required="required"
-      v-model ="password">
+      v-model ="password"
+      />
   </div>
   <div class="wrapper-div__padding_bottom">
     <button 
@@ -26,13 +28,14 @@
       >Log in
     </button>
   </div>
-  <a  href="http://localhost:8000/register">Don't have an account?</a>
+  <a  href="http://localhost:8000/register">Don't have an account?></a>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
 import store from 'store'
+
   export default {
     data(){
       return {
@@ -41,17 +44,23 @@ import store from 'store'
       }
     },
     methods:{
+      // beforeCreate(){
+      //   if(store.state.isLoggedin){
+      //     router.push('/posts')
+      //   }
+      // },
       signin() {
           axios.post('http://localhost:8000/login',
           {email: this.email,password: this.password},
           {headers:{'X-Requested-With':'XMLHttpRequest'}})
           .then(
-            (response)=>{
+            (response)=> {
               const token = response.data.token //get it from response
               const base64Url = token.split('.')[1]; //split token to dot , take 2nd index of token
               const base64 = base64Url.replace('-','+').replace('_','/'); //replace
               console.log(JSON.parse(window.atob(base64))) //return token as json string
               localStorage.setItem('token',token) //store raw token that we get from server
+              this.$router.push('/posts')
             }
           )
           .catch(
