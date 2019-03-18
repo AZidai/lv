@@ -19,6 +19,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use 
     $router->post('/post', 'PostController@create');
     $router->post('/commment','CommentController@create');
     $router->put('/comment/{id}','CommentController@update');
+    $router->get('/logout','AuthController@logout');
 });
     $router->post('/login', 'AuthController@postLogin');
     $router->post('/register', 'AuthController@postRegister');

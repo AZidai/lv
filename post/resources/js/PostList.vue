@@ -18,7 +18,7 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                             <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target="#myModal"><button class="btn btn-primary" data-toggle="modal" >Edit</button></a>
                             <a class="dropdown-item" @click="deletePost(post.id)">Delete</a>
                             <a class="dropdown-item" href="#">Report</a>
                         </div>
@@ -78,6 +78,9 @@ export default{
                     })
                     .catch(err => console.log(err))
             }
+        },
+        editPost(id){
+            
         }
     }
 }

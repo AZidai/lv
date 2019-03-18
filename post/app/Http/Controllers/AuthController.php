@@ -40,8 +40,9 @@ class AuthController extends Controller
             ],500);
         }
         return response()->json([
-            'token' => $token
-        ],200);
+            'token' => $token,
+            'user' => $this->guard()->user()
+        ]);
     }
     public function postRegister(Request $request)
     {
@@ -55,5 +56,19 @@ class AuthController extends Controller
         $user = User::create($request->all());
 
         return response()->json($user);
+    }
+
+    public function logout(){
+        auth('api')->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function me()
+    {
+        return response()->json(auth('api')->user());
+    }
+    public function guard()
+    {
+        return \Auth::Guard('api');
     }
 }

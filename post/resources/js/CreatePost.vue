@@ -55,7 +55,8 @@ export default {
     data() {
         return {
             title:"",
-            body:""
+            body:"",
+            user_id: this.$userId
         }
     },
 
@@ -65,7 +66,7 @@ export default {
             const post = {
                 title: this.title,
                 body: this.body,
-                user_id:"2"
+                user_id: this.user_id
             }
 
             axios.post('api/post?token='+ token ,{post},
