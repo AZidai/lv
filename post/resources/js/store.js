@@ -7,16 +7,6 @@ const LOGIN = "LOGIN"
 const LOGIN_SUCCESS= "LOGIN_SUCCESS"
 const LOGOUT = "LOGOUT"
 // obj state
-function getLoggedinUser(){
-    const userStr = localStorage.getItem('user');
-
-    if(!userStr){
-        return null
-    }
-
-    return JSON.parse(userStr);
-}
-const user = getLoggedinUser;
 
 const state = {
     isLoggedin: !!localStorage.getItem('token')
