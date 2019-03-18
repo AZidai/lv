@@ -8,6 +8,7 @@ const LOGIN_SUCCESS= "LOGIN_SUCCESS"
 const LOGOUT = "LOGOUT"
 // obj state
 
+export const token = localStorage.getItem('token')
 const state = {
     isLoggedin: !!localStorage.getItem('token')
 }

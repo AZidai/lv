@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use Auth;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Comment;
@@ -61,13 +62,15 @@ class PostController extends Controller
     public function delete($id)
     {
         $post = Post::find($id);
-
+        
         if(!$post) {
-            return messageJson(404,$post,'Post not found');
+            return response()->json('Post not found');
         }
         if ($post){
-            $post->comments()->delete();
-            $post->delete();
+            if( Auth::id == $this.post()->user_id ){
+                $post->comments()->delete();
+                $post->delete();
+            }
         }
     }
 }

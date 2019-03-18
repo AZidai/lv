@@ -51,12 +51,13 @@
 </template>
 <script>
 import axios from 'axios'
+
+
 export default {
     data() {
         return {
             title:"",
-            body:"",
-            user_id: this.$userId
+            body:""
         }
     },
 
@@ -66,10 +67,10 @@ export default {
             const post = {
                 title: this.title,
                 body: this.body,
-                user_id: this.user_id
+                user_id:"2"
             }
 
-            axios.post('api/post?token='+ token ,{post},
+            axios.post('api/post?token='+ token ,post,
             {headers:{'X-Requested-With':'XMLHttpRequest'}})
             .then(response =>
             {
@@ -77,7 +78,10 @@ export default {
                 this.$root.$emit('PostAdded')
             })
         }
-    }
+    },
+    computed:{
+        
+    },
 }
 </script>
 
