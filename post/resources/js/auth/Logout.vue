@@ -9,6 +9,7 @@ export default {
 
     mounted(){
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         store.commit(LOGOUT_USER)
         router.push('/login')
     }

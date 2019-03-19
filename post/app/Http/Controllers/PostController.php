@@ -26,13 +26,13 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($this->request->all(),[
+        $this->validate($request , [
             'title'=>'required',
             'body' =>'required',
             'user_id'=>'required'
         ]);
         $post = Post::create($request->all());
-
+        $post->save();
         return response()->json($post, 201);
         
     }
@@ -43,7 +43,7 @@ class PostController extends Controller
         if(!$post) {
             return response()->json()->notFound(404,'Post not found');
         }
-        $validator = Validator::make($this->request->all(),[
+        $validator = Validator::make($this->request,[
             'title'=>'required',
             'body' =>'required',
             'user_id'=>'required'
@@ -61,16 +61,20 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        $loggeduserID = Auth::guard('api')->user()->id;
         $post = Post::find($id);
         
-        if(!$post) {
+        if (!$post) {
             return response()->json('Post not found');
-        }
-        if ($post){
-            if( Auth::id == $this.post()->user_id ){
+        } else {
+            $author = $post->user_id;
+            if ($author != $loggeduserID) {
+                return response()->json("Only author can delete this post!");
+            } else { 
                 $post->comments()->delete();
                 $post->delete();
+                return response()->json('Post deleted successfully');
             }
         }
     }
-}
+}       

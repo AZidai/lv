@@ -63,15 +63,13 @@ export default {
 
     methods:{
         addPost() {
-            const token = localStorage.getItem('token')
             const post = {
                 title: this.title,
                 body: this.body,
-                user_id:"2"
+                user_id: this.loggedUser.id
             }
-
-            axios.post('api/post?token='+ token ,post,
-            {headers:{'X-Requested-With':'XMLHttpRequest'}})
+            const token = localStorage.getItem('token')
+            axios.post('api/post?token='+ token , post )
             .then(response =>
             {
                 this.posts = response.post
@@ -80,7 +78,9 @@ export default {
         }
     },
     computed:{
-        
+        loggedUser() {
+            return JSON.parse(localStorage.getItem('user'))
+        }
     },
 }
 </script>

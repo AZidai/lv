@@ -18,8 +18,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                             <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" @click="editPost()">Edit</a>
-                            <a class="dropdown-item" @click="deletePost(post.id)">Delete</a>
+                            <a class="dropdown-item" @click="editPost(post.id)">Edit</a>
+                            <a class="dropdown-item" v-if="loggedUser.id == post.user.id" @click="deletePost(post.id)">Delete</a>
                             <a class="dropdown-item" href="#">Report</a>
                         </div>
                     </div>
@@ -59,8 +59,8 @@ export default{
         })
     },
     computed: {
-    loggedUser () {
-        return localStorage.getItem('user')
+        loggedUser () {
+            return JSON.parse(localStorage.getItem('user'))
         }
     }, 
     methods: {
@@ -71,13 +71,16 @@ export default{
                 })
             },
         deletePost(id){
+            const token = localStorage.getItem('token')
             if(confirm('Are you sure')){
-                fetch(`post/${id}`+ {token} ,
+                fetch(`api/post/${id}?token=`+ token ,
                 {method:'delete'},
-                {headers:{'X-Requested-With':'XMLHttpRequest', 'Authorization':'Bearer'}})
-                    .then(res=> res.json())
+                {headers:{'X-Requested-With':'XMLHttpRequest', Authorization:'Bearer'}})
+                    // .then(res=> res.json())
                     .then(data => {
-                        this.getAllPosts();
+                        this.posts.splice(this.posts.findIndex( item => {
+                            return item.id === id
+                        }), 1);
                     })
                     .catch(err => console.log(err))
             }
