@@ -55,29 +55,29 @@ export default {
     data() {
         return {
             title:"",
-            body:"",
-            user_id: this.$userId
+            body:""
         }
     },
-
     methods:{
         addPost() {
-            const token = localStorage.getItem('token')
             const post = {
                 title: this.title,
                 body: this.body,
-                user_id: this.user_id
+                user_id: this.loggedUser.id
             }
-
-            axios.post('api/post?token='+ token ,{post},
-            {headers:{'X-Requested-With':'XMLHttpRequest'}})
+            const token = localStorage.getItem('token')
+            axios.post('api/post?token='+ token , post )
             .then(response =>
             {
                 this.posts = response.post
                 this.$root.$emit('PostAdded')
             })
         }
-    }
+    },
+    computed: {
+        loggedUser() {
+            return JSON.parse(localStorage.getItem('user'))
+        }
+    },
 }
 </script>
-

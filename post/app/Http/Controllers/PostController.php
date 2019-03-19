@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use Auth;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Comment;
@@ -25,13 +26,13 @@ class PostController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($this->request->all(),[
+        $this->validate($request , [
             'title'=>'required',
             'body' =>'required',
             'user_id'=>'required'
         ]);
         $post = Post::create($request->all());
-
+        $post->save();
         return response()->json($post, 201);
         
     }
@@ -42,7 +43,7 @@ class PostController extends Controller
         if(!$post) {
             return response()->json()->notFound(404,'Post not found');
         }
-        $validator = Validator::make($this->request->all(),[
+        $validator = Validator::make($this->request,[
             'title'=>'required',
             'body' =>'required',
             'user_id'=>'required'
@@ -60,14 +61,20 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        $loggeduserID = Auth::guard('api')->user()->id;
         $post = Post::find($id);
 
-        if(!$post) {
-            return messageJson(404,$post,'Post not found');
-        }
-        if ($post){
-            $post->comments()->delete();
-            $post->delete();
+        if (!$post) {
+            return response()->json('Post not found');
+        } else {
+            $author = $post->user_id;
+            if ($author != $loggeduserID) {
+                return response()->json("Only author can delete this post!");
+            } else { 
+                $post->comments()->delete();
+                $post->delete();
+                return $this->responsejson('Post deleted successfully');
+            }
         }
     }
 }

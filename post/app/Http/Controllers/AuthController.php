@@ -26,7 +26,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
         //we pass these in attempt so JWT can create token
-        $credentials = $request->only('email','password');
+        $credentials = $request->only( 'email','password' );
         try {
             // pokusaj da napravis token,u koliko ne catach exception
             if( !$token = $this->jwt->attempt($credentials)) {
@@ -34,7 +34,7 @@ class AuthController extends Controller
                     'error' => 'Invalid Credentials'
                 ],401);
             }
-        }catch(JWTException $e) {
+        } catch (JWTException $e) {
             return response()->json([
                 'error' =>'Could not create token!'
             ],500);
@@ -57,12 +57,11 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
-
-    public function logout(){
+    public function logout()
+    {
         auth('api')->logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
-
     public function me()
     {
         return response()->json(auth('api')->user());

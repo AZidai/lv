@@ -18,8 +18,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                             <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" data-toggle="modal" data-target="#myModal"><button class="btn btn-primary" data-toggle="modal" >Edit</button></a>
-                            <a class="dropdown-item" @click="deletePost(post.id)">Delete</a>
+                            <a class="dropdown-item" @click="editPost(post.id)">Edit</a>
+                            <a class="dropdown-item" v-if="loggedUser.id == post.user.id" @click="deletePost(post.id)">Delete</a>
                             <a class="dropdown-item" href="#">Report</a>
                         </div>
                     </div>
@@ -41,46 +41,50 @@
     </div>
 </div>
 </template>
-
 <script>
 import axios from 'axios'
 import store from 'store'
 
 export default{
-  data: function () {
-    return {
-      posts:[]
-    }
-  },
+    data() {
+        return {
+            posts:[]
+        }
+    },
     mounted: function(){
         this.getAllPosts()
         this.$root.$on('PostAdded', ()=>{
             this.getAllPosts()
         })
     },
-        
+    computed: {
+        loggedUser () {
+            return JSON.parse(localStorage.getItem('user'))
+        }
+    }, 
     methods: {
         getAllPosts(){
-            axios.get('api/posts',{
-                headers:{ Authorization: 'Bearer ' + localStorage.getItem('token')}})
+            axios.get('api/posts')
                 .then(response=>{
                     this.posts = response.data
                 })
             },
         deletePost(id){
+            const token = localStorage.getItem('token')
             if(confirm('Are you sure')){
-                fetch(`post/${id}?token=`+token,{
-                    method:'delete'
-                },{headers:{'X-Requested-With':'XMLHttpRequest'}})
-                    .then(res=> res.json())
+                fetch(`api/post/${id}?token=`+ token ,
+                {method:'delete'},
+                {headers:{'X-Requested-With':'XMLHttpRequest', Authorization:'Bearer'}})
+                    // .then(res=> res.json())
                     .then(data => {
-                        this.getAllPosts();
+                        this.posts.splice(this.posts.findIndex( item => {
+                            return item.id === id
+                        }), 1);
                     })
                     .catch(err => console.log(err))
             }
         },
-        editPost(id){
-            
+        editPost(){
         }
     }
 }
