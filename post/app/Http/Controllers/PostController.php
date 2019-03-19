@@ -63,7 +63,7 @@ class PostController extends Controller
     {
         $loggeduserID = Auth::guard('api')->user()->id;
         $post = Post::find($id);
-        
+
         if (!$post) {
             return response()->json('Post not found');
         } else {
@@ -73,8 +73,8 @@ class PostController extends Controller
             } else { 
                 $post->comments()->delete();
                 $post->delete();
-                return response()->json('Post deleted successfully');
+                return $this->responsejson('Post deleted successfully');
             }
         }
     }
-}       
+}

@@ -47,8 +47,8 @@ import store from 'store'
 
 export default{
     data() {
-    return {
-        posts:[]
+        return {
+            posts:[]
         }
     },
     mounted: function(){
