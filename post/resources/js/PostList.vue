@@ -41,17 +41,16 @@
     </div>
 </div>
 </template>
-
 <script>
 import axios from 'axios'
 import store from 'store'
 
 export default{
-    data: function () {
+    data() {
     return {
         posts:[]
-    }
-  },
+        }
+    },
     mounted: function(){
         this.getAllPosts()
         this.$root.$on('PostAdded', ()=>{

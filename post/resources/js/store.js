@@ -12,7 +12,6 @@ export const token = localStorage.getItem('token')
 const state = {
     isLoggedin: !!localStorage.getItem('token')
 }
-
 const mutations = {
     LOGIN_USER(state){
         state.isLoggedin = true

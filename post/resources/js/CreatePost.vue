@@ -51,8 +51,6 @@
 </template>
 <script>
 import axios from 'axios'
-
-
 export default {
     data() {
         return {
@@ -60,7 +58,6 @@ export default {
             body:""
         }
     },
-
     methods:{
         addPost() {
             const post = {
@@ -77,11 +74,10 @@ export default {
             })
         }
     },
-    computed:{
+    computed: {
         loggedUser() {
             return JSON.parse(localStorage.getItem('user'))
         }
     },
 }
 </script>
-
