@@ -3,6 +3,7 @@
 </template>
 <script>
 import store from 'store'
+import router from 'vue-router'
 
 export default {
     name:'logout',
@@ -10,8 +11,8 @@ export default {
     mounted(){
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        store.commit(LOGOUT_USER)
-        router.push('/login')
+        // store.commit(LOGOUT_USER)
+        this.$router.push('/posts')
     }
 }
 </script>

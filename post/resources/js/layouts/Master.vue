@@ -6,6 +6,7 @@
         <router-link to="/login"><li>Login</li></router-link>
         <router-link to="/register"><li>Register</li></router-link>
         <router-link to="/posts"><li>Posts</li></router-link>
+        <router-link to="/logout"><li>Logout</li></router-link>
     </ul>
     <div>
         <router-view></router-view>

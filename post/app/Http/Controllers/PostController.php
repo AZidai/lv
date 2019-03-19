@@ -34,46 +34,50 @@ class PostController extends Controller
         $post = Post::create($request->all());
         $post->save();
         return response()->json($post, 201);
-        
     }
 
     public function update($id)
     {
+        $loggeduserID = Auth::guard('api')->user()->id;
+
         $post = Post::findOrFail($id);
         if(!$post) {
-            return response()->json()->notFound(404,'Post not found');
+            return response()->json(404,'Post not found');
         }
-        $validator = Validator::make($this->request,[
-            'title'=>'required',
-            'body' =>'required',
-            'user_id'=>'required'
-        ]);
-
-        if($validator->errors()->count()) {
-            return Response::badRequest($validator->errors());
-        }
-        $post = $this->post->updatePost($id,$this->request->all());
         if($post) {
-            return Response::json($post);
-        }
-        return reponse()->json()->internalError('Unable to update the post');
-    }
+            $author = $post->user_id;
+            if($author == $loggeduserID) {
+                $validator = Validator::make($this->request,[
+                    'title'=>'required',
+                    'body' =>'required',
+                    'user_id'=>'required'
+                ]);
 
+                if($validator->errors()->count()) {
+                    return Response::json()->badRequest($validator->errors());
+                }
+                $post = $this->post->updatePost($id,$this->request->all());
+
+            } else {
+                return response()->json('Only author can edit the post');
+            }
+        }
+    }
     public function delete($id)
     {
         $loggeduserID = Auth::guard('api')->user()->id;
         $post = Post::find($id);
-
+        
         if (!$post) {
-            return response()->json('Post not found');
+            return response()->json('Post not found',40);
         } else {
             $author = $post->user_id;
             if ($author != $loggeduserID) {
-                return response()->json("Only author can delete this post!");
+                return response()->json("Only author can delete this post!",401);
             } else { 
                 $post->comments()->delete();
                 $post->delete();
-                return $this->responsejson('Post deleted successfully');
+                return response()->json('Post deleted successfully',200);
             }
         }
     }
