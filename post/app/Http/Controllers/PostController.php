@@ -20,7 +20,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::find($id)->with('comments')->orderBy('created_at', 'desc')->get();
+        $post = Post::with('comments','user')->find($id);
         return response()->json($post);
     }
 
@@ -36,7 +36,7 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
-    public function update($id)
+    public function update(Request $request,$id)
     {
         $loggeduserID = Auth::guard('api')->user()->id;
 
@@ -47,17 +47,11 @@ class PostController extends Controller
         if($post) {
             $author = $post->user_id;
             if($author == $loggeduserID) {
-                $validator = Validator::make($this->request,[
+                $this->validate($request,[
                     'title'=>'required',
                     'body' =>'required',
                     'user_id'=>'required'
                 ]);
-
-                if($validator->errors()->count()) {
-                    return Response::json()->badRequest($validator->errors());
-                }
-                $post = $this->post->updatePost($id,$this->request->all());
-
             } else {
                 return response()->json('Only author can edit the post');
             }

@@ -18,7 +18,7 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                             <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="EditMe(post.id)">Edit</a>
+                            <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="Showme(post.id)">Show</a>
                             <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="deletePost(post.id)">Delete</a>
                             <a class="dropdown-item" href="#">Report</a>
                         </div>
@@ -46,7 +46,7 @@ import axios from 'axios'
 import store from 'store'
 import router from 'vue-router'
 
-import EditModal from './EditModal'
+import ShowPost from './ShowPost'
 
 export default{
     data() {
@@ -61,9 +61,9 @@ export default{
         })
     },
     computed: {
-        loggedUserId () {
+        loggedUserId() {
             let logUser = JSON.parse(localStorage.getItem('user'))
-            return logUser.hasOwnProperty('id') ? logUser.id : null
+            return logUser.hasOwnProperty('id') ? logUser.id : false
             
         }
     }, 
@@ -89,7 +89,7 @@ export default{
                     .catch(err => console.log(err))
             }
         },
-        EditMe(id) {
+        Showme(id) {
             this.$router.push({path:`post/${id}`})
         }
     }
