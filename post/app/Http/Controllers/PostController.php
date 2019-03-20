@@ -20,7 +20,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::with('comments','user')->find($id);
+        $post = Post::with('user')->find($id);
         return response()->json($post);
     }
 

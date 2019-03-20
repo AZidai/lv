@@ -7,6 +7,7 @@ import Logout from './auth/Logout'
 import Register from './auth/Register'
 import Posts from './Posts'
 import ShowPost from './ShowPost'
+import Comments from './Comments'
 import {store} from './store' //zato sto je smesten store u const store = ..
 
 window.eventBus = new Vue()
@@ -18,8 +19,7 @@ const routes = [
     { path: '/register', component: Register },
     { path: '/posts', component: Posts },
     { path: '/logout', component: Logout },
-    { path: '/post/:id', component: ShowPost, props: true }
-
+    { path: '/post/:id', component: ShowPost, props: true },
 ]
 
 const router = new VueRouter({

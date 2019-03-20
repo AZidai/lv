@@ -13,6 +13,7 @@
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use ($router) {
     $router->get('/post/{id}', 'PostController@show');
+    $router->get('/post/{id}/comments','CommentController@getCommentsbyPostId');
     $router->delete('/post/{id}', 'PostController@delete');
     $router->put('/post/{id}', 'PostController@update');
     $router->post('/post', 'PostController@create');

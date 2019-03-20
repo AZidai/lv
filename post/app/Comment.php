@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +14,12 @@ class Comment extends Model
   //elloquent relationships
   public function post()
   {
-      return $this->belongsTo('App/Post');
+    return $this->belongsTo('App\Post');
   }
   
   public function user()
   {
-    return $this->belongsTo('App/User');
+    return $this->belongsTo('App\User');
   }
 }
 

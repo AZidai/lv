@@ -33,4 +33,12 @@ class User extends Model implements JWTSubject, AuthenticatableContract, Authori
     {
         return [];
     }
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }
