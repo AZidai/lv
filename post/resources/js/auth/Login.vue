@@ -55,7 +55,7 @@ export default {
             const user = response.data.user
             const base64Url = token.split('.')[1] //split token to dot , take 2nd index of token , payload
             const base64 = base64Url.replace('-','+').replace('_','/') //replace
-            console.log(JSON.parse(window.atob(base64))) //return token as json string
+            JSON.parse(window.atob(base64)) //return token as json string
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('token',token) //store raw token that we get from server
             this.$router.push('/posts')

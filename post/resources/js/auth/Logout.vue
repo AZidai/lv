@@ -2,7 +2,7 @@
     
 </template>
 <script>
-import store from 'store'
+import {store} from 'store'
 import router from 'vue-router'
 
 export default {
@@ -11,7 +11,6 @@ export default {
     mounted(){
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        // store.commit(LOGOUT_USER)
         this.$router.push('/login')
     }
 }

@@ -12,8 +12,8 @@
                     </div>
                 </div>
                 <div>
-                    <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="Showme(post.id)"><i class="fa fa-share-square-o"></i></a>
-                    <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="deletePost(post.id)"><i class="fa fa-times"></i></a>
+                    <a class="dropdown-item" @click="Showme(post.id)"><i class="fa fa-share-square-o"></i></a>
+                    <a class="dropdown-item" v-if="userid == post.user.id" @click="deletePost(post.id)"><i class="fa fa-times"></i></a>
                 </div>
             </div>
         </div>
@@ -42,7 +42,8 @@ import ShowPost from './ShowPost'
 export default{
     data() {
         return {
-            posts:[]
+            posts:[],
+            userid:0
         }
     },
     mounted: function() {
@@ -50,14 +51,8 @@ export default{
         this.$root.$on('PostAdded', ()=>{
             this.getAllPosts()
         })
+        this.findUser()
     },
-    computed: {
-        loggedUserId() {
-            let logUser = JSON.parse(localStorage.getItem('user'))
-            return logUser.hasOwnProperty('id') ? logUser.id : false
-            
-        }
-    }, 
     methods: {
         getAllPosts() {
             axios.get('api/posts')
@@ -71,7 +66,6 @@ export default{
                 fetch(`api/post/${id}?token=`+ token ,
                 {method:'delete'},
                 {headers:{'X-Requested-With':'XMLHttpRequest', Authorization:'Bearer'}})
-                    // .then(res=> res.json())
                     .then(data => {
                         this.posts.splice(this.posts.findIndex( item => {
                             return item.id === id
@@ -82,6 +76,15 @@ export default{
         },
         Showme(id) {
             this.$router.push({path:`post/${id}`})
+        },
+        findUser() {
+            let logUser =localStorage.getItem('user')
+            if(logUser){
+                let user = JSON.parse(logUser)
+                    this.userid = user.id
+            } else {
+                    this.userid = 0
+            }
         }
     }
 }

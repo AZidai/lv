@@ -13,8 +13,8 @@
                         </div>
                     </div>
                     <div>
-                        <a class="dropdown-item"><i class="fa fa-pencil" @click="isEdit = !isEdit"></i></a>
-                        <a class="dropdown-item" @click="deletePost()"><i class="fa fa-times"></i></a>
+                        <a class="dropdown-item" v-if="userid == post.user.id"><i class="fa fa-pencil" @click="isEdit = !isEdit"></i></a>
+                        <a class="dropdown-item" v-if="userid == post.user.id" @click="deletePost()"><i class="fa fa-times"></i></a>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="float-left">
-            <Comments :post-id ="parseInt(id)"></Comments>
+          <Comments :post-id ="parseInt(id)"></Comments>
         </div>
     </div>
 </div>
@@ -51,6 +51,7 @@ export default {
     },
     data(){
         return {
+            userid:0,
             isEdit:false,
             body:"",
             title:"",
@@ -60,7 +61,7 @@ export default {
     },
     mounted: function() {
         this.getPost()
-        console.log('showpost',this.id)
+        this.findUser()
     },
     methods:{
         getPost(){
@@ -95,7 +96,16 @@ export default {
                 this.post.title = this.title
                 this.post.body = this.body
             })
-        },          
+        },
+        findUser() {
+            let logUser =localStorage.getItem('user')
+            if(logUser){
+                let user = JSON.parse(logUser)
+                    this.userid = user.id
+            } else {
+                    this.userid = 0
+            }
+        }         
     }
 }
 </script>

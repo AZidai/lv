@@ -12,7 +12,6 @@
  */
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use ($router) {
-    $router->get('/post/{id}', 'PostController@show');
     $router->delete('/post/{id}', 'PostController@delete');
     $router->delete('/comment/{id}','CommentController@delete');
     $router->put('/post/{id}', 'PostController@update');
@@ -21,6 +20,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use 
     $router->put('/comment/{id}','CommentController@update');
     $router->get('/logout','AuthController@logout');
 });
+    $router->get('/api/post/{id}', 'PostController@show');
     $router->get('/api/posts', 'PostController@index');
     $router->post('/login', 'AuthController@postLogin');
     $router->post('/register', 'AuthController@postRegister');

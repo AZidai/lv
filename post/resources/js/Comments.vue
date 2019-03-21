@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <a class="dropdown-item"><i class="fa fa-pencil" @click="toggleEdit(comment.id)"></i></a>
-                    <a class="dropdown-item" @click="deleteComment(comment.id)"><i class="fa fa-times"></i></a>
+                    <a class="dropdown-item" v-if="userid == comment.user.id"><i class="fa fa-pencil" @click="toggleEdit(comment.id)"></i></a>
+                    <a class="dropdown-item" v-if="userid == comment.user.id" @click="deleteComment(comment.id)"><i class="fa fa-times"></i></a>
                 </div>
             </div>
             <div class="card-body">
@@ -47,6 +47,7 @@ export default {
     },
     data(){
         return{
+            userid:0,
             isEdit:null,
             body:"",
             comments:[]
@@ -54,10 +55,10 @@ export default {
     },
     mounted(){
         this.getComments()
+        this.findUser()
     },
     methods:{
         getComments(){
-            console.log(this.postId)
             const token = localStorage.getItem('token')
             axios.get('/api/post/'+ this.postId + '/comments' +'?token='+ token,
             {headers:{'X-Requested-With':'XMLHttpRequest', Authorization:'Bearer'}}
@@ -98,7 +99,16 @@ export default {
                     })
                     .catch(err => console.log(err))
             }
-        }
+        },
+        findUser() {
+            let logUser =localStorage.getItem('user')
+            if(logUser){
+                let user = JSON.parse(logUser)
+                    this.userid = user.id
+            } else {
+                    this.userid = 0
+            }
+        }      
     }
 }
 </script>
