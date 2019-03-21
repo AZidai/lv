@@ -13,18 +13,19 @@
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth:api'], function () use ($router) {
     $router->get('/post/{id}', 'PostController@show');
-    $router->get('/post/{id}/comments','CommentController@getCommentsbyPostId');
     $router->delete('/post/{id}', 'PostController@delete');
+    $router->delete('/comment/{id}','CommentController@delete');
     $router->put('/post/{id}', 'PostController@update');
     $router->post('/post', 'PostController@create');
-    $router->post('/commment','CommentController@create');
+    $router->post('/comment','CommentController@create');
     $router->put('/comment/{id}','CommentController@update');
     $router->get('/logout','AuthController@logout');
 });
     $router->get('/api/posts', 'PostController@index');
     $router->post('/login', 'AuthController@postLogin');
     $router->post('/register', 'AuthController@postRegister');
-
+    $router->get('/api/post/{id}/comments','CommentController@getCommentsbyPostId');
+    
 
 $router->get('/{route:.*}/', function () {
     return view('app');

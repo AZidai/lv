@@ -12,7 +12,7 @@ export default {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         // store.commit(LOGOUT_USER)
-        this.$router.push('/posts')
+        this.$router.push('/login')
     }
 }
 </script>

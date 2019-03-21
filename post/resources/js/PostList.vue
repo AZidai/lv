@@ -12,17 +12,8 @@
                     </div>
                 </div>
                 <div>
-                    <div class="dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                            <div class="h6 dropdown-header">Configuration</div>
-                            <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="Showme(post.id)">Show</a>
-                            <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="deletePost(post.id)">Delete</a>
-                            <a class="dropdown-item" href="#">Report</a>
-                        </div>
-                    </div>
+                    <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="Showme(post.id)"><i class="fa fa-share-square-o"></i></a>
+                    <a class="dropdown-item" v-if="loggedUserId == post.user.id" @click="deletePost(post.id)"><i class="fa fa-times"></i></a>
                 </div>
             </div>
         </div>

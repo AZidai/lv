@@ -39,19 +39,21 @@ class PostController extends Controller
     public function update(Request $request,$id)
     {
         $loggeduserID = Auth::guard('api')->user()->id;
-
         $post = Post::findOrFail($id);
+        
         if(!$post) {
             return response()->json(404,'Post not found');
-        }
-        if($post) {
+        }else {
             $author = $post->user_id;
+
             if($author == $loggeduserID) {
                 $this->validate($request,[
                     'title'=>'required',
                     'body' =>'required',
-                    'user_id'=>'required'
                 ]);
+                $post->title = $request->input('title');
+                $post->body = $request->input('body');
+                $post->save();
             } else {
                 return response()->json('Only author can edit the post');
             }

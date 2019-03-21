@@ -40,6 +40,7 @@
 
 <script>
 import axios from 'axios'
+import router from 'vue-router'
 
 export default {
     data() {
@@ -51,19 +52,16 @@ export default {
     },
     methods:{
       signup(){
-        axios.post('http://localhost:8000/register',
+        axios.post('/register',
         {name: this.name ,email: this.email,password: this.password,},
         {headers:{'X-Requested-With':'XMLHttpRequest'}})
-        .then(
-          (response)=>console.log(response)
-        )
+        .then( response => {
+          this.$router.push('/login')
+        })
         .catch(
           (error) => console.log(error)
         );
     },
-    mounted(){
-
-    }, 
   }
 }
 

@@ -70,6 +70,8 @@ export default {
             .then(response =>
             {
                 this.posts = response.post
+                this.title = ""
+                this.body = ""
                 this.$root.$emit('PostAdded')
             })
         }
